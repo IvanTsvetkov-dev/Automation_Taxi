@@ -67,6 +67,7 @@
     <Compile Include="SplashForm.Designer.cs">
       <DependentUpon>SplashForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utils.cs" />
     <EmbeddedResource Include="AddOrder.resx">
       <DependentUpon>AddOrder.cs</DependentUpon>
     </EmbeddedResource>
