@@ -16,7 +16,6 @@ namespace IndividualTask
 {
     public partial class MainForm : Form
     {
-        //Data Source - указывает на название сервера. Initial Catalog указывает на название бд.
         private string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         public MainForm()
         {
@@ -33,16 +32,11 @@ namespace IndividualTask
             SqlConnection connection = new SqlConnection(connectionString);
             try
             {
-                // Открываем подключение
                 connection.Open();
-                //SqlCommand command = new SqlCommand("SELECT * FROM Order;", connection);
-                //SqlDataReader reader = command.ExecuteReader();
                 string sqlQuery = "SELECT * FROM vw_Orders;";
                 SqlDataAdapter adapter = new SqlDataAdapter(sqlQuery, connection);
                 DataSet ds = new DataSet();
-                // Заполняем Dataset
                 adapter.Fill(ds);
-                // Отображаем данные
                 dataGridView1.DataSource = ds.Tables[0];
                 dataGridView1.Columns[0].Width = 95;
                 dataGridView1.Columns[1].Width = 60;
@@ -50,34 +44,28 @@ namespace IndividualTask
                 dataGridView1.Columns[3].Width = 75;
                 dataGridView1.Columns[6].Width = 90;
                 dataGridView1.Columns[7].Width = 65;
-                //Указываем, что нужно заполнять всё доступное пространство в ширину
             }
             catch (SqlException ex)
             {
-                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message);
             }
             finally
             {
-                // закрываем подключение
                 connection.Close();
             }
         }
-        //Добавление в формы водителей значений в комбобоксы
         private void MainForm_Load(object sender, EventArgs e)
         {
             refreshDataInOrderList();
 
         }
 
-
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Application.Exit();
         }
-        //Вкладка Drivers
         private void LoadComboBoxesInDriversTab()
         {
-            //Журнал
             string sqlQuery = "SELECT Driver_ID, (h.First_name + ' ' + h.Last_name) AS 'Fullname' FROM Driver d JOIN Human h ON (d.Human_ID = h.Human_ID);";
             Utils.LoadDataInComboBox(driverComboBox, sqlQuery, "Driver_ID", "Fullname", "Выберите водителя", connectionString);
 
@@ -88,7 +76,6 @@ namespace IndividualTask
 
             endWorkDay.Text = DateTime.Now.ToString();
 
-            //Регистрация водителя
             sqlQuery = "SELECT * FROM Tariff";
             Utils.LoadDataInComboBox(tariffComboBox, sqlQuery, "Tariff_ID", "Class_car", "Тариф", connectionString);
 
@@ -99,25 +86,19 @@ namespace IndividualTask
             SqlConnection connection = new SqlConnection(connectionString);
             try
             {
-                // Открываем подключение
                 connection.Open();
-                //SqlCommand command = new SqlCommand("SELECT * FROM Order;", connection);
-                //SqlDataReader reader = command.ExecuteReader();
                 string sqlQuery = "SELECT * FROM vw_DriverWorkLog;";
                 SqlDataAdapter adapter = new SqlDataAdapter(sqlQuery, connection);
                 DataSet ds = new DataSet();
-                // Заполняем Dataset
                 adapter.Fill(ds);
-                // Отображаем данные
                 driverWorkLog.DataSource = ds.Tables[0];
             }
             catch (SqlException ex)
             {
-                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message);
             }
             finally
             {
-                // закрываем подключение
                 connection.Close();
             }
         }
@@ -135,18 +116,13 @@ namespace IndividualTask
             string sqlQuery = "SELECT * FROM DriverWorkLog;";
             try
             {
-
-                // Открываем подключение к базе данных
                 connection.Open();
 
-                // Создание адаптера с SQL-запросом
                 SqlDataAdapter adapter = new SqlDataAdapter(sqlQuery, connection);
 
-                // Заполнение DataSet
                 DataSet ds = new DataSet();
                 adapter.Fill(ds);
 
-                // Создаем новый DataTable для добавления пустого элемента в ComboBox
                 DataTable dataTable = ds.Tables[0];
                 DataRow newRow = dataTable.NewRow();
 
@@ -156,9 +132,7 @@ namespace IndividualTask
                 newRow["Region_ID"] = (int)regionStartComboBox.SelectedValue;
 
 
-                //Доавили строку к объекту DataTable
                 dataTable.Rows.Add(newRow);
-                //Пр
                 SqlCommandBuilder commandBuilder = new SqlCommandBuilder(adapter);
                 int rowsAffected = adapter.Update(ds);
                 if (rowsAffected == 0)
@@ -216,8 +190,6 @@ namespace IndividualTask
                 humanAdapter.Update(humansTable);
 
                 int humanId = GetLastInsertedId(connection, "Human", "Human_ID");
-
-                MessageBox.Show(humanId.ToString());
 
                 DataTable driversTable = new DataTable();
                 driversTable.Columns.Add("Human_ID");
@@ -302,7 +274,7 @@ namespace IndividualTask
             }
             catch (SqlException ex)
             {
-                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message);
             }
             finally
             {
@@ -324,7 +296,7 @@ namespace IndividualTask
             }
             catch (SqlException ex)
             {
-                MessageBox.Show($"Ошибка SQL: {ex.Message}\n{ex.StackTrace}");
+                MessageBox.Show(ex.Message);
             }
             finally
             {
@@ -363,7 +335,7 @@ namespace IndividualTask
                 }
                 catch (SqlException ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    MessageBox.Show(ex.Message);
                 }
                 finally
                 {

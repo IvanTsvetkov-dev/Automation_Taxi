@@ -78,26 +78,20 @@ namespace IndividualTask
             SqlConnection connection = new SqlConnection(connectionString);
             try
             {
-                // Открываем подключение к базе данных
                 connection.Open();
 
-                // Создание адаптера с SQL-запросом
                 SqlDataAdapter adapter = new SqlDataAdapter(sqlQuery, connection);
 
-                // Заполнение DataSet
                 DataSet ds = new DataSet();
                 adapter.Fill(ds);
 
-                // Создаем новый DataTable для добавления пустого элемента в ComboBox
                 DataTable dataTable = ds.Tables[0];
 
-                // Добавляем пустой элемент
                 DataRow row = dataTable.NewRow();
                 row[nameIdAttribute] = 0;
                 row[nameBodyComboBox] = startingValue;
                 dataTable.Rows.InsertAt(row, 0);
 
-                // Настройка ComboBox
                 nameOfcomboBox.DataSource = dataTable; // Привязка к ComboBox
                 nameOfcomboBox.DisplayMember = nameBodyComboBox; // Название, которое отображается
                 nameOfcomboBox.ValueMember = nameIdAttribute; // Значение элемента
@@ -105,7 +99,7 @@ namespace IndividualTask
             }
             catch (SqlException ex)
             {
-                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message);
             }
             finally
             {
@@ -147,14 +141,13 @@ namespace IndividualTask
                     int waiting_time_minutes = int.Parse(waitingTimeBox.Text);
                     newRow["Driver_ID"] = int.Parse(driverTextBox.Text);
                     newRow["Waiting_time_minutes"] = waiting_time_minutes;
-                    //Далее нужно расчитать стоимость
+
                     SqlCommand command = new SqlCommand($"SELECT * FROM Tariff WHERE Tariff_ID={tariffComboBox.SelectedValue};", connection);
                     SqlDataReader reader = command.ExecuteReader();
                     reader.Read();
                     newRow["Cost"] = int.Parse(reader.GetValue(3).ToString()) + int.Parse(reader.GetValue(2).ToString()) * distantion + int.Parse(reader.GetValue(4).ToString()) * waiting_time_minutes; //стоимость подачи + километры пути * стоимость километра + время ожидания * стоимость ожидания
-                    MessageBox.Show(reader.GetValue(3).ToString());
                     reader.Close();
-                    //Рассчитать время поездки
+
                     newRow["Start_Ride"] = datetime.AddMinutes(waiting_time_minutes);
                     newRow["End_Ride"] = datetime.AddMinutes(waiting_time_minutes + ride_time_minutes);
                 }
@@ -202,21 +195,16 @@ namespace IndividualTask
             SqlConnection connection = new SqlConnection(connectionString);
             try
             {
-                // Открываем подключение
                 connection.Open();
-                //SqlCommand command = new SqlCommand("SELECT * FROM Order;", connection);
-                //SqlDataReader reader = command.ExecuteReader();
                 string sqlQuery = "SELECT * FROM vw_DriverLiveQueue;";
                 SqlDataAdapter adapter = new SqlDataAdapter(sqlQuery, connection);
                 DataSet ds = new DataSet();
-                // Заполняем Dataset
                 adapter.Fill(ds);
-                // Отображаем данные
                 dataGridQueue.DataSource = ds.Tables[0];
             }
             catch (SqlException ex)
             {
-                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message );
             }
             finally
             {
@@ -237,9 +225,6 @@ namespace IndividualTask
             SqlConnection connection = new SqlConnection(connectionString);
             try
             {
-                // Открываем подключение
-                //SqlCommand command = new SqlCommand("SELECT * FROM Order;", connection);
-                //SqlDataReader reader = command.ExecuteReader();
                 string sqlQuery;
                 if (classAuto != "" && regionInfo != "")
                 {
@@ -260,18 +245,15 @@ namespace IndividualTask
                 connection.Open();
                 SqlDataAdapter adapter = new SqlDataAdapter(sqlQuery, connection);
                 DataSet ds = new DataSet();
-                // Заполняем Dataset
                 adapter.Fill(ds);
-                // Отображаем данные
                 dataGridQueue.DataSource = ds.Tables[0];
             }
             catch (SqlException ex)
             {
-                Console.WriteLine(ex.Message);
+                MessageBox.Show(ex.Message);
             }
             finally
             {
-                // закрываем подключение
                 connection.Close();
             }
         }
