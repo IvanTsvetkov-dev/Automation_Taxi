@@ -65,3 +65,24 @@ the order. The status indicates rejected.
 
 11. Region.Each city has certain districts with their own names. Each district has its own streets and addresses. When assigning a driver, the dispatcher selects the one closest to the pick-up point, that is, the one who is in the same district
 ### ERD
+
+![Logical](https://github.com/user-attachments/assets/c23866c5-463e-4e11-966e-74f202f31158)  
+### Relational Model  
+![Relational](https://github.com/user-attachments/assets/859ff666-699c-4765-8721-de4738f80ed7)  
+
+### Screenshoot User Interface  
+![image](https://github.com/user-attachments/assets/152b208a-2716-441a-96cf-1d42d7ec7587)  
+![image](https://github.com/user-attachments/assets/516c20fd-5a4e-4cac-9168-4765ff60839c)  
+![image](https://github.com/user-attachments/assets/8708c9d0-8435-415e-a5a7-26900feb5068)
+![image](https://github.com/user-attachments/assets/783dfc6d-c96b-407a-b35b-1159c6d51d88)
+![image](https://github.com/user-attachments/assets/d19733d9-451d-4b00-a575-1ec25aa5feae)  
+
+## Result
+The main target of this database practice was design complex model and try implement it.
+
+*Post scriptum:* The user interface was not the main target.
+
+
+
+
+
